@@ -10,7 +10,7 @@ pipeline {
               // label 'my-defined-label'
               // additionalBuildArgs  '--build-arg version=1.0.2'
               // args '-v /tmp:/tmp'
-              args --cap-add=NET_ADMIN --cap-add=NET_RAW
+              args '--cap-add=NET_ADMIN --cap-add=NET_RAW'
             }
         }
         steps {
