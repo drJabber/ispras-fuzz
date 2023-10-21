@@ -4,7 +4,7 @@ pipeline {
     stage("build") {
         agent {
             // dockerfile true
-            {
+            dockerfile {
               filename 'Dockerfile.dev01'
               // dir 'build'
               // label 'my-defined-label'
