@@ -2,7 +2,7 @@ FROM aflplusplus/aflplusplus:stable
 
 RUN cat /etc/os-release && \
     apt update && \
-    apt install libssl-dev libpcap-dev && \
+    apt install -y libssl-dev libpcap-dev && \
     echo "install libssl 1.0.0" && \    
     wget -c http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb && \
     dpkg -x libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb libssl1.0.0 && \
