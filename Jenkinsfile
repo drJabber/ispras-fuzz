@@ -27,7 +27,7 @@ pipeline {
 
              ls -lha ./tcpdump
 
-             timeout 20s ./tcpdump
+             sudo timeout 20s ./tcpdump
           """
         }
     }    
