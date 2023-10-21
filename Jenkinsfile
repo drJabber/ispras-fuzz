@@ -25,9 +25,9 @@ pipeline {
              ./configure
              make CFLAGS="-fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=unreachable "
 
-             ls -lha tcpdump
+             ls -lha ./tcpdump
 
-             timeout 20s tcpdump
+             timeout 20s ./tcpdump
           """
         }
     }    
