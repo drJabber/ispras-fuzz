@@ -13,7 +13,7 @@ pipeline {
             // }
         }
         steps {
-          git branch: "tags/tcpdump-4.5.0", credentialsId: "gh-ci", url: "https://github.com/the-tcpdump-group/tcpdump.git"
+          git branch: "refs/tags/tcpdump-4.5.0", credentialsId: "gh-ci", url: "https://github.com/the-tcpdump-group/tcpdump.git"
 
           sh """
              grep -rl 'openssl' ./ | xargs sed -i "s/openssl/openssl1.0.2n/g"
