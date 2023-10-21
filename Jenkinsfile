@@ -10,6 +10,7 @@ pipeline {
               // label 'my-defined-label'
               // additionalBuildArgs  '--build-arg version=1.0.2'
               // args '-v /tmp:/tmp'
+              args --cap-add=NET_ADMIN --cap-add=NET_RAW
             }
         }
         steps {
@@ -27,7 +28,7 @@ pipeline {
 
              ls -lha ./tcpdump
 
-             sudo timeout 20s ./tcpdump
+             timeout 20s ./tcpdump
           """
         }
     }    
