@@ -10,7 +10,7 @@ pipeline {
               // label 'my-defined-label'
               // additionalBuildArgs  '--build-arg version=1.0.2'
               // args '-v /tmp:/tmp'
-              args '--cap-add=NET_ADMIN --cap-add=NET_RAW'
+              args '--privileged'
             }
         }
         steps {
@@ -22,7 +22,6 @@ pipeline {
           ])         
 
           sh """
-             pwd
              grep -rl 'openssl' ./ | xargs sed -i "s/\\([^a-zA-Z0-9_]\\)openssl\\([^a-zA-Z0-9_]\\)/\\1openssl1.0.2n\\2/g"
              ./configure
              make CFLAGS="-fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=unreachable "

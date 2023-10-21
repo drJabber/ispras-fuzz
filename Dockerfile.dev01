@@ -28,9 +28,7 @@ RUN cat /etc/os-release && \
     cp -arfv /build/libssl1.0-dev/usr/lib/x86_64-linux-gnu/pkgconfig/openssl.pc /usr/lib/x86_64-linux-gnu/pkgconfig/openssl1.0.2n.pc && \
     cp -arfv /build/libssl1.0-dev/usr/lib/x86_64-linux-gnu/libcrypto.a /usr/lib/x86_64-linux-gnu/libcrypto1.0.2n.a && \
     cp -arfv /build/libssl1.0-dev/usr/lib/x86_64-linux-gnu/libcrypto.so /usr/lib/x86_64-linux-gnu/libcrypto1.0.0.so && \ 
-    cp -arfv /build/libssl1.0-dev/usr/lib/x86_64-linux-gnu/libssl.so /usr/lib/x86_64-linux-gnu/libssl1.0.0.so && \
-    echo "add caps" && \
-    setcap CAP_NET_RAW,CAP_NET_ADMIN /usr/sbin/tcpdump
+    cp -arfv /build/libssl1.0-dev/usr/lib/x86_64-linux-gnu/libssl.so /usr/lib/x86_64-linux-gnu/libssl1.0.0.so 
 
 
 
