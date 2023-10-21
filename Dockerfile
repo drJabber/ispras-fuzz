@@ -8,6 +8,7 @@ RUN cat /etc/os-release && \
     echo "install libssl 1.0.0" && \    
     wget -c http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb && \
     dpkg -x libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb /build/libssl1.0.0 && \
+    ls -lha /build && \
     cp -arfv /build/libssl1.0.0/lib/x86_64-linux-gnu/* /usr/local/lib/ && \
     cp -arfv /build/libssl1.0.0/usr/lib/x86_64-linux-gnu /usr/local/lib/ && \
     cp -arfv /build/libssl1.0.0/usr/lib/* /usr/local/lib/ && \
@@ -19,6 +20,7 @@ RUN cat /etc/os-release && \
     echo "install libssl 1.0.0-dev" && \    
     wget -c http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0-dev_1.0.2n-1ubuntu5.13_amd64.deb && \
     dpkg -x libssl1.0-dev_1.0.2n-1ubuntu5.13_amd64.deb /build/libssl1.0-dev && \
+    ls -lha /build && \
     cp -arfv /build/libssl1.0-dev/usr/include/openssl /usr/include/openssl1.0.2n && \
     cp -arfv /build/libssl1.0-dev/usr/include/x86_64-linux-gnu/openssl /usr/include/x86_64-linux-gnu/openssl1.0.2n && \
     cp -arfv /build/libssl1.0-dev/usr/lib/x86_64-linux-gnu/pkgconfig/libcrypto.pc /usr/lib/x86_64-linux-gnu/pkgconfig/libcrypto1.0.2n.pc && \
