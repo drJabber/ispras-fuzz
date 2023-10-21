@@ -5,7 +5,7 @@ pipeline {
         agent {
             // dockerfile true
             dockerfile {
-              filename 'Dockerfile.dev01'
+              filename 'Dockerfile.rel01'
               // dir 'build'
               // label 'my-defined-label'
               // additionalBuildArgs  '--build-arg version=1.0.2'
@@ -23,7 +23,7 @@ pipeline {
           sh """
              grep -rl 'openssl' ./ | xargs sed -i "s/\\([^a-zA-Z0-9_]\\)openssl\\([^a-zA-Z0-9_]\\)/\\1openssl1.0.2n\\2/g"
              ./configure
-             make 
+             make CFLAGS="-fsanitize=address -fsanitize=thread -fsanitize=leak -fsanitize=undefined -fsanitize=unreacheable "
           """
         }
     }    
