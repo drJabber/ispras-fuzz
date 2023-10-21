@@ -10,7 +10,7 @@ pipeline {
               // label 'my-defined-label'
               // additionalBuildArgs  '--build-arg version=1.0.2'
               // args '-v /tmp:/tmp'
-              args '--privileged'
+              args '--privileged -u 0:0'
             }
         }
         steps {
