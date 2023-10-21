@@ -23,7 +23,7 @@ pipeline {
           sh """
              grep -rl 'openssl' ./ | xargs sed -i "s/\\([^a-zA-Z0-9_]\\)openssl\\([^a-zA-Z0-9_]\\)/\\1openssl1.0.2n\\2/g"
              ./configure
-             make CFLAGS="-fsanitize=address -fsanitize=thread -fsanitize=leak -fsanitize=undefined -fsanitize=unreacheable "
+             make CFLAGS="-fsanitize=address -fsanitize=thread -fsanitize=leak -fsanitize=undefined -fsanitize=unreachable "
           """
         }
     }    
