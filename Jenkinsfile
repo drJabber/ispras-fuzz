@@ -22,7 +22,7 @@ pipeline {
           // git branch: "refs/tags/tcpdump-4.5.0", credentialsId: "gh-ci", url: "https://github.com/the-tcpdump-group/tcpdump.git"
 
           sh """
-             grep -rl 'openssl' ./ | xargs sed -i "s/\\([^a-zA-Z0-9]\\)openssl\\([^a-zA-Z0-9]\\)/\\1openssl1.0.2n\\2/g"
+             grep -rl 'openssl' ./ | xargs sed -i "s/\\([^a-zA-Z0-9_]\\)openssl\\([^a-zA-Z0-9_]\\)/\\1openssl1.0.2n\\2/g"
              ./configure
              make 
              make check
