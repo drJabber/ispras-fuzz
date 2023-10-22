@@ -18,7 +18,7 @@ pipeline {
           ])         
 
           sh """
-             awk 'NR==309{print "\t\t\tmagic_close(magic);"}1' src/file.c > src/file.c
+            #  awk 'NR==309{print "\t\t\tmagic_close(magic);"}1' src/file.c > src/file.c
 
              autoreconf -f -i
              ./configure --disable-silent-rules
