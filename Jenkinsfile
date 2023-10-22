@@ -29,7 +29,7 @@ pipeline {
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat src/softmagic.c | \
                 awk -v replacement="\t\twhile (magindex + 1 < nmagic &&" 'NR==199{\$0=replacement}{print}' | \
-                awk -v replacement="\t\t    magic[magindex + 1].cont_level != 0) {" 'NR==200{\$0=replacement}{print}' > stemp_file_name && \
+                awk -v replacement="\t\t    magic[magindex + 1].cont_level != 0) {" 'NR==200{\$0=replacement}{print}' > \$temp_file_name && \
                 mv -f \$temp_file_name ./src/softmagic.c
 
              make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
