@@ -28,7 +28,7 @@ pipeline {
           """
 
           sh "ls -lha ./tcpdump"        
-          archiveArtifacts artifacts: './tcpdump'
+          archiveArtifacts artifacts: '**/tcpdump'
         }
     }    
   }
