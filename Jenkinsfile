@@ -37,8 +37,8 @@ pipeline {
              echo "patch memory leak in tests/test.c line 101"
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
                    cat ./tests/test.c | \
-                   awk 'NR==106{print "\t\t\tfree(desired);"}1' |
-                   awk 'NR==109{print "\t\tfree(desired);"}1' > \$temp_file_name && \
+                   awk 'NR==106{print "\t\t\t\t\tfree(desired);"}1' |
+                   awk 'NR==109{print "\t\t\tfree(desired);"}1' > \$temp_file_name && \
                    mv -f \$temp_file_name ./tests/test.c
 
              make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
@@ -50,7 +50,6 @@ pipeline {
                           -fstack-check -fstack-protector-all --coverage"
           """
 
-          sh "ls -lha ./"        
           archiveArtifacts artifacts: '**/file'          
         }
     }    
