@@ -5,11 +5,7 @@ pipeline {
         agent {
             // dockerfile true
             dockerfile {
-              filename 'Dockerfile.dev01'
-              // dir 'build'
-              // label 'my-defined-label'
-              // additionalBuildArgs  '--build-arg version=1.0.2'
-              // args '-v /tmp:/tmp'
+              filename 'Dockerfile.rel01'
             }
         }
         steps {
@@ -25,6 +21,9 @@ pipeline {
              ./configure
              make 
           """
+
+          sh "ls -lha ./tcpdump"        
+          archiveArtifacts artifacts: '**/tcpdump'          
         }
     }    
   }
