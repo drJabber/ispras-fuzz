@@ -21,6 +21,8 @@ pipeline {
              autoreconf -f -i
              ./configure --disable-silent-rules
 
+             temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==309{print "\t\t\tmagic_close(magic);"}1' ./src/file.c > $temp_file_name && mv -f $temp_file_name ./src/file.c
+
              awk 'NR==309{print "\t\t\tmagic_close(magic);"}1' src/file.c > src/file.c
 
              make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
