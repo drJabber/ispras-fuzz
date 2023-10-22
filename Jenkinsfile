@@ -24,7 +24,7 @@ pipeline {
           sh """
              grep -rl 'openssl' ./ | xargs sed -i "s/\\([^a-zA-Z0-9_]\\)openssl\\([^a-zA-Z0-9_]\\)/\\1openssl1.0.2n\\2/g"
              ./configure
-             make CFLAGS="-fsanitize=address -fsanitize=leak -fsanitize=unreachable -fsanitize=undefined"
+             make CFLAGS="-fsanitize=address -fsanitize=leak -fsanitize=unreachable -fsanitize=undefined --coverage"
           """
 
           sh "ls -lha ./tcpdump"        
