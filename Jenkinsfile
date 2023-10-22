@@ -11,19 +11,19 @@ pipeline {
         steps {
           checkout([
               $class: 'GitSCM',
-              branches: [[name: 'refs/tags/tcpdump-4.5.0']],
+              branches: [[name: 'refs/tags/FILE5_10']],
               extensions: [[$class: 'CloneOption', shallow: false, depth: 0, reference: '']],
-              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/the-tcpdump-group/tcpdump.git"]],
+              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/file/file.git"]],
           ])         
 
           sh """
-             grep -rl 'openssl' ./ | xargs sed -i "s/\\([^a-zA-Z0-9_]\\)openssl\\([^a-zA-Z0-9_]\\)/\\1openssl1.0.2n\\2/g"
-             ./configure
-             make 
+             autoreconf -f -i
+             ./configure --disable-silent-rules
+             make -j8
           """
 
-          sh "ls -lha ./tcpdump"        
-          archiveArtifacts artifacts: '**/tcpdump'          
+          sh "ls -lha ./"        
+          archiveArtifacts artifacts: '**/file'          
         }
     }    
   }
