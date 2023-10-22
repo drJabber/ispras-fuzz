@@ -4,7 +4,7 @@ WORKDIR /build
 
 RUN cat /etc/os-release && \
     apt update && \
-    apt install -y automake libtool make python zlib1g-dev 
+    apt install -y automake libtool make python-is-python3 zlib1g-dev 
     # echo "install libssl 1.0.0" && \    
     # wget -c http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb && \
     # dpkg -x libssl1.0.0_1.0.2n-1ubuntu5_amd64.deb /build/libssl1.0.0 && \
