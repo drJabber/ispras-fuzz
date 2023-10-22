@@ -41,10 +41,12 @@ pipeline {
                    awk 'NR==109{print "\t\t\tfree(desired);"}1' > \$temp_file_name && \
                    mv -f \$temp_file_name ./tests/test.c
 
+             echo "compile \"file\" binary"
              make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
                           -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
                           -fstack-check -fstack-protector-all --coverage"
 
+             echo "compile and invoke tests"
              make -C tests check CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
                           -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
                           -fstack-check -fstack-protector-all --coverage"
