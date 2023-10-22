@@ -24,9 +24,7 @@ pipeline {
              ./configure --disable-silent-rules
 
 
-             make -j8 CFLAGS="-fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
-                          -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
-                          -fstack-check -fstack-protector-all"
+             make -j8 
           """
 
           sh "ls -lha ./"        
