@@ -52,7 +52,7 @@ pipeline {
                           -fstack-check -fstack-protector-all --coverage"
           """
 
-          archiveArtifacts artifacts: '**/file'          
+          archiveArtifacts artifacts: 'src/.libs/file, src/.libs/libmagic.so*'          
         }
     }    
   }
