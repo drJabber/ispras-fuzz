@@ -5,7 +5,7 @@ WORKDIR /build
 RUN cat /etc/os-release 
 RUN apt update
 RUN apt-get install --reinstall ca-certificates
-RUN LC_ALL=C.UTF-8 add-apt-repository ppa:beineri/opt-qt571-trusty -y 
+# RUN LC_ALL=C.UTF-8 add-apt-repository ppa:beineri/opt-qt571-trusty -y 
 RUN apt update 
 RUN apt install -y cmake build-essential autoconf 
 
