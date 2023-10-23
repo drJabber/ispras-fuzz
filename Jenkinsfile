@@ -11,15 +11,13 @@ pipeline {
         steps {
           checkout([
               $class: 'GitSCM',
-              branches: [[name: 'refs/tags/FILE5_10']],
+              branches: [[name: 'refs/master']],
               extensions: [[$class: 'CloneOption', shallow: false, depth: 0, reference: '']],
-              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/file/file.git"]],
+              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/pts/sam2p.git"]],
           ])         
 
           sh """
-             autoreconf -f -i
-             ./configure --disable-silent-rules
-             make -j8
+             compile.sh
           """
 
           sh "ls -lha ./"        
