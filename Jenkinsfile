@@ -42,7 +42,11 @@ pipeline {
                           error.cpp image.cpp gensio.cpp snprintf.c gensi.cpp out_gif.cpp \
                           -o sam2p.instrumented
 
-            wget https://github.com/pts/tif22pnm/releases/download/2014-01-09/png22pnm.xstatic -o ./png_test/png2pnm
+            wget https://github.com/pts/tif22pnm/releases/download/2014-01-09/png22pnm.xstatic -o ./png2pnm
+            
+            export export PATH=\$PATH:`pwd`
+            echo \$PATH
+
             ./png_test/png_test.sh ../sam2p.instrumented
           """
 
