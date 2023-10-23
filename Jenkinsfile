@@ -18,9 +18,9 @@ pipeline {
 
           sh """
 
-            set -ex
+            // set -ex
 
-            export CXX="${CXX:-g++}"
+            // export CXX="\${CXX:-g++}"
 
             if test -f bts2.tth; then :; else
               (. ./gen_bts2_tth.sh) || exit "$?"
