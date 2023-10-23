@@ -5,7 +5,7 @@ pipeline {
         agent {
             // dockerfile true
             dockerfile {
-              filename 'Dockerfile.dev01'
+              filename 'Dockerfile.cov01'
             }
         }
         steps {
@@ -42,9 +42,23 @@ pipeline {
                           -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
                           -fstack-check -fstack-protector-all --coverage"
 
-             ./png2bin -i ./screenshot.png -o ./out.bin -p 254
+          """
 
-             ./bin2png -i ./out.bin -o ./out.png -p 253
+          sh """
+            mkdir -p ./test/png
+            mkdir -p ./test/bin
+
+            wget https://raw.githubusercontent.com/richgel999/random_pngs/main/random_pngs.7z -o ./test/png/test.7z
+
+            7z x ./test/png/test.7z -0./test/png
+            rm ./test/png/test.7z
+
+            test_files = (./test/png/*.png)
+            for png in \$test_files[@]:0:20; 
+            do 
+               ./png2bin -i \$png -o \${png}".bin" -p 0; 
+            done
+
 
           """
 
