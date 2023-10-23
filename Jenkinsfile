@@ -17,7 +17,15 @@ pipeline {
           ])         
 
           sh """
+             echo "patch git modules"
+
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
+                cat ./.git/config | \
+                awk -v replacement="\turl = https://github.com/kermitt2/xpdf-4.03.git" 'NR==14{\$0=replacement}{print}' > \$temp_file_name && \
+                mv -f \$temp_file_name ./.git/config
+
               git submodule update --init --recursive
+
               ./install_deps.sh
               cmake .
               make
