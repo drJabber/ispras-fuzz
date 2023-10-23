@@ -1,7 +1,5 @@
 FROM aflplusplus/aflplusplus:stable
 
-WORKDIR /build
-
 RUN cat /etc/os-release && \
     apt update && \
     apt install -y libpng-dev
