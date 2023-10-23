@@ -17,7 +17,7 @@ pipeline {
           ])         
 
           sh """
-             compile.sh
+             ./compile.sh
           """
 
           sh "ls -lha ./"        
