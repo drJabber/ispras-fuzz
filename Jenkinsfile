@@ -5,7 +5,7 @@ pipeline {
         agent {
             // dockerfile true
             dockerfile {
-              filename 'Dockerfile.rel01'
+              filename 'Dockerfile.dev01'
             }
         }
         steps {
@@ -32,7 +32,10 @@ pipeline {
                 mv -f \$temp_file_name ./bin2png.c
 
 
-             make
+             make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
+                          -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
+                          -fstack-check -fstack-protector-all --coverage"
+                          
           """
 
           archiveArtifacts artifacts: '**/bin2png, **/png2bin'          
