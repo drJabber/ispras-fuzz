@@ -45,10 +45,9 @@ pipeline {
             wget https://github.com/pts/tif22pnm/releases/download/2014-01-09/png22pnm.xstatic -o ./png22pnm
             
             chmod +x ./png22pnm
-
-            ls -lha
-
-            png22pnm
+            ls -lha ./png22pnm
+            which png22pnm
+            echo \$PATH
 
             ./png_test/png_test.sh ../sam2p.instrumented
           """
