@@ -18,7 +18,7 @@ pipeline {
 
           sh """
             if test -f bts2.tth; then :; else
-              (. ./gen_bts2_tth.sh) || exit "$?"
+              (. ./gen_bts2_tth.sh) || exit "\$?"
             fi
 
             \$CXX -O0 -g -fsanitize=address -ansi -Wall -W -Wextra print_sizeofs.c -o print_sizeofs
