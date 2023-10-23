@@ -24,7 +24,7 @@ pipeline {
             \$CXX -O0 -g -fsanitize=address -ansi -Wall -W -Wextra print_sizeofs.c -o print_sizeofs
             ./print_sizeofs >sizeofs.h
 
-            SAM2P_VERSION="$(set -- --getversion; . ./mkdist.sh)"
+            SAM2P_VERSION="\$(set -- --getversion; . ./mkdist.sh)"
             test "\$SAM2P_VERSION"
 
             # Don't use `-nostdlib -lc', it prevents linking crtbeginT.o or causes segfault.
