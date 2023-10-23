@@ -11,7 +11,7 @@ pipeline {
         steps {
           checkout([
               $class: 'GitSCM',
-              branches: [[name: 'refs/master']],
+              branches: [[name: 'master']],
               extensions: [[$class: 'CloneOption', shallow: false, depth: 0, reference: '']],
               userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/pts/sam2p.git"]],
           ])         
