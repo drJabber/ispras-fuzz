@@ -54,6 +54,7 @@ pipeline {
             rm ./test/png/test.7z
 
             export test_files="("./test/png/*.png")"
+            echo "\$test_files"
             for png in \${test_files[@]:0:20}; 
             do 
                ./png2bin -i \$png -o \${png}".bin" -p 0; 
