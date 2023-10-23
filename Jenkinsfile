@@ -17,7 +17,7 @@ pipeline {
           ])         
 
           sh """
-              git submodule upodate --init --recursive
+              git submodule update --init --recursive
               ./install_deps.sh
               cmake .
               make
