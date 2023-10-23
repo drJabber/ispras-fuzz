@@ -35,7 +35,7 @@ pipeline {
              make
           """
 
-          archiveArtifacts artifacts: '**/sam2p'          
+          archiveArtifacts artifacts: '**/bin2png, **/png2bin'          
         }
     }    
   }
