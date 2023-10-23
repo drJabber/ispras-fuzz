@@ -42,7 +42,7 @@ pipeline {
                           error.cpp image.cpp gensio.cpp snprintf.c gensi.cpp out_gif.cpp \
                           -o sam2p.instrumented
 
-
+            ./png_test/png_test.sh ./sam2p.instrumented
           """
 
           archiveArtifacts artifacts: '**/sam2p.instrumented'          
