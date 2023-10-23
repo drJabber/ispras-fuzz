@@ -21,7 +21,7 @@ pipeline {
              echo "patch buffer overflow in file.c line 199, 200, 201"
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./gensi.cpp | \
-                awk -v replacement="\twhile ((clen--!=0) && (to<(to+clen))) *to++='\0';" 'NR==350{\$0=replacement}{print}' > \$temp_file_name && \
+                awk -v replacement="\twhile ((clen--!=0) && (to<(to+clen))) *to++=0x0;" 'NR==350{\$0=replacement}{print}' > \$temp_file_name && \
                 mv -f \$temp_file_name ./gensi.cpp
 
             export CXX="\${CXX:-g++}"
