@@ -50,7 +50,7 @@ pipeline {
 
             wget https://raw.githubusercontent.com/richgel999/random_pngs/main/random_pngs.7z -O ./test/png/test.7z
 
-            7z x ./test/png/test.7z -o./test/png
+            7z x ./test/png/test.7z -o./test/png -y
             rm ./test/png/test.7z
 
             export test_files = (./test/png/*.png)
