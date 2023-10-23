@@ -21,7 +21,7 @@ pipeline {
               (. ./gen_bts2_tth.sh) || exit "$?"
             fi
 
-            ${CXX} -O0 -g -fsanitize=address -ansi -Wall -W -Wextra print_sizeofs.c -o print_sizeofs
+            \${CXX} -O0 -g -fsanitize=address -ansi -Wall -W -Wextra print_sizeofs.c -o print_sizeofs
             ./print_sizeofs >sizeofs.h
 
             SAM2P_VERSION="$(set -- --getversion; . ./mkdist.sh)"
@@ -29,7 +29,7 @@ pipeline {
 
             # Don't use `-nostdlib -lc', it prevents linking crtbeginT.o or causes segfault.
             # With or without -fno-use-cxa-atexit, doesn't make a difference.
-            ${CXX} -O0 -g DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
+            \${CXX} -O0 -g DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
                           -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
                           -fstack-check -fstack-protector-all --coverage \
                           -DHAVE_CONFIG2_H -DUSE_CONFIG_STDC_H -DSAM2P_VERSION=\""\$SAM2P_VERSION"\" \
