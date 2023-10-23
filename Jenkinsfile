@@ -42,9 +42,9 @@ pipeline {
                           -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
                           -fstack-check -fstack-protector-all --coverage"
 
-             ./png2bin -i ./screenshot.png -o ./out.bin
+             ./png2bin -i ./screenshot.png -o ./out.bin -p 254
 
-             ./bin2png -i ./out.bin -o ./out.png
+             ./bin2png -i ./out.bin -o ./out.png -p 253
 
           """
 
