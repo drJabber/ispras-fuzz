@@ -13,11 +13,11 @@ pipeline {
               $class: 'GitSCM',
               branches: [[name: 'master']],
               extensions: [[$class: 'CloneOption', shallow: false, depth: 0, reference: '']],
-              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/pts/sam2p.git"]],
+              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/jweyrich/imgify.git"]],
           ])         
 
           sh """
-             ./compile.sh
+             make
           """
 
           archiveArtifacts artifacts: '**/sam2p'          
