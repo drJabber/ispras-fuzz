@@ -46,6 +46,10 @@ pipeline {
             
             chmod +x ./png22pnm
 
+            ls -lha
+
+            png22pnm
+
             ./png_test/png_test.sh ../sam2p.instrumented
           """
 
