@@ -31,13 +31,19 @@ pipeline {
                 awk -v replacement='#include \"common_options.h\"' 'NR==34{\$0=replacement}{print}' > \$temp_file_name && \
                 mv -f \$temp_file_name ./bin2png.c
 
+             echo "fix double free in imgify.c 253"
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
+                cat ./imgify.c | \
+                awk -v replacement="" 'NR==253{\$0=replacement}{print}'  > \$temp_file_name && \
+                mv -f \$temp_file_name ./imgify.c
+
 
              make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
                           -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
                           -fstack-check -fstack-protector-all --coverage"
 
              ./png2bin -i ./screenshot.png -o ./out.bin
-             
+
              ./bin2png -i ./out.bin -o ./out.png
 
           """
