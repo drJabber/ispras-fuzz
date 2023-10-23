@@ -46,7 +46,6 @@ pipeline {
             
             chmod +x ./png22pnm
             ls -lha ./png22pnm
-            which png22pnm
             echo \$PATH
 
             ./png_test/png_test.sh ../sam2p.instrumented
