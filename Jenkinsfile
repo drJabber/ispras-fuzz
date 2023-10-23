@@ -21,7 +21,7 @@ pipeline {
               (. ./gen_bts2_tth.sh) || exit "$?"
             fi
 
-            \$CXX -O0 -g -fsanitize=address -ansi -Wall -W -Wextra print_sizeofs.c -o print_sizeofs
+            ${CXX} -O0 -g -fsanitize=address -ansi -Wall -W -Wextra print_sizeofs.c -o print_sizeofs
             ./print_sizeofs >sizeofs.h
 
             SAM2P_VERSION="$(set -- --getversion; . ./mkdist.sh)"
