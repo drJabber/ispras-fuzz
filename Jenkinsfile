@@ -11,7 +11,7 @@ pipeline {
         steps {
           checkout([
               $class: 'GitSCM',
-              branches: [[name: '/refs/tags/0.4']],
+              branches: [[name: 'master']],
               extensions: [[$class: 'CloneOption', shallow: false, depth: 0, reference: '']],
               userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/kermitt2/pdfalto.git"]],
           ])         
