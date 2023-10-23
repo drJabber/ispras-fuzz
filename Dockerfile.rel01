@@ -3,7 +3,8 @@ FROM aflplusplus/aflplusplus:stable
 WORKDIR /build
 
 RUN cat /etc/os-release && \
-    apt update && \
-    apt install -y libpng-dev
+    add-apt-repository ppa:beineri/opt-qt571-trusty -y && \
+    apt-get update -qq && \
+    apt-get install -qq cmake build-essential autoconf 
 
 

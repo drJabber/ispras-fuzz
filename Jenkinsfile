@@ -5,7 +5,7 @@ pipeline {
         agent {
             // dockerfile true
             dockerfile {
-              filename 'Dockerfile.dev01'
+              filename 'Dockerfile.rel01'
             }
         }
         steps {
@@ -13,42 +13,16 @@ pipeline {
               $class: 'GitSCM',
               branches: [[name: 'master']],
               extensions: [[$class: 'CloneOption', shallow: false, depth: 0, reference: '']],
-              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/jweyrich/imgify.git"]],
+              userRemoteConfigs: [[credentialsId:  'gh-ci', url: "https://github.com/kermitt2/pdfalto.git"]],
           ])         
 
           sh """
-             echo "patch defines"
-             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
-                cat ./png2bin.c | \
-                awk -v replacement="" 'NR==30{\$0=replacement}{print}' | 
-                awk -v replacement='#include \"common_options.h\"' 'NR==34{\$0=replacement}{print}' > \$temp_file_name && \
-                mv -f \$temp_file_name ./png2bin.c
-
-             echo "patch defines"
-             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
-                cat ./bin2png.c | \
-                awk -v replacement="" 'NR==30{\$0=replacement}{print}' | 
-                awk -v replacement='#include \"common_options.h\"' 'NR==34{\$0=replacement}{print}' > \$temp_file_name && \
-                mv -f \$temp_file_name ./bin2png.c
-
-             echo "fix double free in imgify.c 253"
-             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
-                cat ./imgify.c | \
-                awk -v replacement="" 'NR==253{\$0=replacement}{print}'  > \$temp_file_name && \
-                mv -f \$temp_file_name ./imgify.c
-
-
-             make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
-                          -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
-                          -fstack-check -fstack-protector-all --coverage"
-
-             ./png2bin -i ./screenshot.png -o ./out.bin -p 254
-
-             ./bin2png -i ./out.bin -o ./out.png -p 253
-
+              ./install_deps.sh
+              cmake .
+              make
           """
 
-          archiveArtifacts artifacts: '**/bin2png, **/png2bin'          
+          archiveArtifacts artifacts: '**/pdfalto'          
         }
     }    
   }
