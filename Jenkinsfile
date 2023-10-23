@@ -20,8 +20,7 @@ pipeline {
              ./compile.sh
           """
 
-          sh "ls -lha ./"        
-          archiveArtifacts artifacts: '**/file'          
+          archiveArtifacts artifacts: '**/sam2p'          
         }
     }    
   }
