@@ -46,7 +46,7 @@ pipeline {
             
             chmod +x ./png22pnm
             ls -lha ./png22pnm
-            echo \$PATH
+            export PATH=\$PATH:/some/new/path
 
             ./png_test/png_test.sh ../sam2p.instrumented
           """
