@@ -4,4 +4,4 @@ WORKDIR /build
 
 RUN cat /etc/os-release && \
     apt update && \
-    apt install -y automake libtool make python-is-python3 zlib1g-dev netbm
+    apt install -y automake libtool make python-is-python3 zlib1g-dev netpbm
