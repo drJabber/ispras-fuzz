@@ -44,13 +44,13 @@ pipeline {
              #             -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
              #             -fstack-check -fstack-protector-all --coverage"
 
-             make -j8 CFLAGS="-g -Wall -fprofile-instr-generate -fcoverage-mapping"
+             make -j8 CFLAGS="-g -Wall -fprofile-instr-generate -fcoverage-mapping --coverage"
           """
 
           sh """
             mkdir -p ./.coverage
             pwd
-            
+
             /tmp/.scripts/setup_tests.sh
             
             gcovr -x ./.coverage/coverage.xml --gcov-executable="llvm-cov gcov"
