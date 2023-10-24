@@ -45,6 +45,9 @@ pipeline {
           """
 
           sh """
+            ls -lha /tmp
+            ls -lha /tmp/.scripts
+
             /tmp/.scripts/setup_tests.sh
 
 
