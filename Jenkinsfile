@@ -49,7 +49,8 @@ pipeline {
 
           sh """
             mkdir -p ./.coverage
-
+            pwd
+            
             /tmp/.scripts/setup_tests.sh
             
             gcovr -x ./.coverage/coverage.xml --gcov-executable="llvm-cov gcov"
