@@ -2,7 +2,7 @@ FROM aflplusplus/aflplusplus:stable
 ARG DEBIAN_FRONTEND=noninteractive
 RUN cat /etc/os-release && \
     apt update && \
-    apt install -y libpng-dev p7zip-full p7zip-rar gcovr && \
+    apt install -y libpng-dev p7zip-full p7zip-rar llvm gcovr && \
     unlink /etc/localtime && \
     ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 
