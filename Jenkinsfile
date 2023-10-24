@@ -48,13 +48,19 @@ pipeline {
           """
 
           sh """
-            ls -lha /tmp
-            ls -lha /tmp/.scripts
-
             /tmp/.scripts/setup_tests.sh
-
-
+            
+            mkdir -p ./.coverage
+            lcov -c -d . -o ./.coverage/imgify_cov.data
+            gcovr -x ./.coverage/coverage.xml
           """
+
+          // discoverGitReferenceBuild
+          recordCoverage( tools: [[parser: "Cobertura"]],
+                          id: "coverage",
+                          sourceCodeRetention: "EVERY_BUILD",
+                          sourceDirectories: [["./"]]
+                          )
 
           archiveArtifacts artifacts: 'test, *.c, *.h, *.gcno, *.gcda, png2bin, bin2png'          
         }
