@@ -56,7 +56,7 @@ pipeline {
 
           """
 
-          archiveArtifacts artifacts: 'test *.c *.h *.gcno *.gcda png2bin bin2png'          
+          archiveArtifacts artifacts: 'test, *.c, *.h, *.gcno, *.gcda, png2bin, bin2png'          
         }
     }    
   }
