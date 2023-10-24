@@ -17,7 +17,7 @@ pipeline {
           ])         
 
           sh """
-             rm *.gcno *.gcda
+             rm *.gcno *.gcda || true
 
              echo "patch defines"
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
