@@ -29,5 +29,5 @@ do
 done
 
 pwd
-llvm-profdata merge -sparse ./.coverage/png2bin.profraw ./.coverage/bin2png.profraw -o ./.coverage/.profdata
+llvm-profdata merge -sparse ./.coverage/png2bin.profraw ./.coverage/bin2png.profraw -o ./.coverage/imgify.profdata
 
