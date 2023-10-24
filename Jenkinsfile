@@ -52,6 +52,7 @@ pipeline {
             
             mkdir -p ./.coverage
             lcov -c -d . -o ./.coverage/imgify_cov.data
+            gcov --version
             gcovr -x ./.coverage/coverage.xml
           """
 
