@@ -5,4 +5,4 @@ RUN cat /etc/os-release && \
     apt install -y libpng-dev p7zip-full p7zip-rar
 
 COPY .scripts/ /tmp
-COPY .scripts/setup_tests.sh /tmp/.scripts
+COPY .scripts/setup_tests.sh /tmp/.scripts/setup_tests.sh
