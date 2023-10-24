@@ -49,16 +49,12 @@ pipeline {
 
           sh """
             mkdir -p ./.coverage
-            pwd
-
             /tmp/.scripts/setup_tests.sh
             
-            gcovr -x ./.coverage/coverage.xml --gcov-executable="llvm-cov gcov"
-            ls -lha ./.coverage
           """
 
           // discoverGitReferenceBuild
-          recordCoverage( tools: [[parser: "COBERTURA", pattern: "**/coverage.xml"]],
+          recordCoverage( tools: [[parser: "COBERTURA", pattern: "**/coverage*.xml"]],
                           id: "coverage-imgify",
                           name: "Coverage for imgify projectt",
                           sourceCodeRetention: "EVERY_BUILD",
