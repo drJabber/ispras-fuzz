@@ -55,7 +55,6 @@ pipeline {
             /tmp/.scripts/setup_tests.sh           
           """
 
-          // discoverGitReferenceBuild
           recordCoverage( tools: [[parser: "COBERTURA", pattern: "**/coverage*.xml"]],
                           id: "coverage-imgify",
                           name: "Coverage for imgify projectt",

@@ -36,9 +36,9 @@ FROM aflplusplus/aflplusplus:stable
 ARG DEBIAN_FRONTEND=noninteractive
 RUN cat /etc/os-release && \
     apt update && \
-    apt install -y libpng-dev p7zip-full p7zip-rar llvm gcovr python3-pip && \
-    unlink /etc/localtime && \
-    ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+    apt install -y libpng-dev p7zip-full p7zip-rar llvm  python3-pip && \
+    # unlink /etc/localtime && \
+    # ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
     pip3 install lcov_cobertura
 
 COPY .scripts/ /tmp
@@ -82,6 +82,7 @@ lcov_cobertura ./.coverage/imgify.bin2png.lcov -b ./ -o ./.coverage/coverage-img
 ```
 
 - результаты анализа покрытия
+
 Общее покрытие:
 ![Total coverage](images/total_coverage.png "Total coverage")
 
@@ -98,8 +99,74 @@ lcov_cobertura ./.coverage/imgify.bin2png.lcov -b ./ -o ./.coverage/coverage-img
 
 Для улучшения покрытия - необходимо смоделировать ситуации с ошибочными входными параметрами - например - несуществующие файлы, директории readonly, кривые png с несуществующими цветами, бинарные файлы, забитые байтом #0 и т.д.
 
+3. Сборка с включенными санитайзерами
 
-4. Установка Jenkins, создание заданий на сборку
+При сборке с включенными санитайзерами и сборкой покрытия:
+
+```bash
+ make -j8 CFLAGS="-g -Wall -fprofile-instr-generate -fcoverage-mapping  \
+                          -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
+                          -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
+                          -fstack-check -fstack-protector-all"
+```
+
+В процессе запуска тестов png2bin срабатывают санитайзеры - на переполнение буфера на куче, в двух участках кода imgify:
+```log
+test png2bin
+=================================================================
+==65==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x60200000001e at pc 0x555c1eae3903 bp 0x7ffcbe716120 sp 0x7ffcbe7158e8
+WRITE of size 2 at 0x60200000001e thread T0
+    #0 0x555c1eae3902 in __interceptor_memcpy (/var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin+0x3a902) (BuildId: a9eb06ff904c60d9e3d9c2e8de120f3966b274fb)
+    #1 0x7fbc1c3bdcdc  (/lib/x86_64-linux-gnu/libpng16.so.16+0x18cdc) (BuildId: d58bf7c11ac793d528926238d831792b5ef792cf)
+    #2 0x7fbc1c3b323a in png_read_row (/lib/x86_64-linux-gnu/libpng16.so.16+0xe23a) (BuildId: d58bf7c11ac793d528926238d831792b5ef792cf)
+    #3 0x7fbc1c3b6b10 in png_read_image (/lib/x86_64-linux-gnu/libpng16.so.16+0x11b10) (BuildId: d58bf7c11ac793d528926238d831792b5ef792cf)
+    #4 0x555c1eb8a015 in png_load /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/imgify.c:135:2
+    #5 0x555c1eb88331 in do_work /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin.c:43:18
+    #6 0x555c1eb874b2 in main /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/./common_main.h:36:2
+    #7 0x7fbc1c09fd8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: a43bfc8428df6623cd498c9c0caeb91aec9be4f9)
+    #8 0x7fbc1c09fe3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f) (BuildId: a43bfc8428df6623cd498c9c0caeb91aec9be4f9)
+    #9 0x555c1eac9574 in _start (/var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin+0x20574) (BuildId: a9eb06ff904c60d9e3d9c2e8de120f3966b274fb)
+
+0x60200000001e is located 2 bytes to the right of 12-byte region [0x602000000010,0x60200000001c)
+allocated by thread T0 here:
+    #0 0x555c1eb4c3be in __interceptor_malloc (/var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin+0xa33be) (BuildId: a9eb06ff904c60d9e3d9c2e8de120f3966b274fb)
+    #1 0x555c1eb89c8b in png_load /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/imgify.c:117:18
+    #2 0x555c1eb88331 in do_work /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin.c:43:18
+    #3 0x555c1eb874b2 in main /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/./common_main.h:36:2
+    #4 0x7fbc1c09fd8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: a43bfc8428df6623cd498c9c0caeb91aec9be4f9)
+
+```
+и 
+```log
+==83==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x6070000000a6 at pc 0x5620ff0e72a9 bp 0x7fff48821df0 sp 0x7fff48821de8
+READ of size 1 at 0x6070000000a6 thread T0
+    #0 0x5620ff0e72a8 in png_load /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/imgify.c:149:7
+    #1 0x5620ff0e5331 in do_work /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin.c:43:18
+    #2 0x5620ff0e44b2 in main /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/./common_main.h:36:2
+    #3 0x7f4358fa1d8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: a43bfc8428df6623cd498c9c0caeb91aec9be4f9)
+    #4 0x7f4358fa1e3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f) (BuildId: a43bfc8428df6623cd498c9c0caeb91aec9be4f9)
+    #5 0x5620ff026574 in _start (/var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin+0x20574) (BuildId: a9eb06ff904c60d9e3d9c2e8de120f3966b274fb)
+
+0x6070000000a6 is located 64 bytes to the right of 70-byte region [0x607000000020,0x607000000066)
+allocated by thread T0 here:
+    #0 0x5620ff0a93be in __interceptor_malloc (/var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin+0xa33be) (BuildId: a9eb06ff904c60d9e3d9c2e8de120f3966b274fb)
+    #1 0x5620ff0e6c8b in png_load /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/imgify.c:117:18
+    #2 0x5620ff0e5331 in do_work /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/png2bin.c:43:18
+    #3 0x5620ff0e44b2 in main /var/lib/jenkins/workspace/tcpdump_imgify-build_cov01_2@2/./common_main.h:36:2
+    #4 0x7f4358fa1d8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: a43bfc8428df6623cd498c9c0caeb91aec9be4f9)
+```
+
+При проведении тестов bin2png ошибки не были обнаружены
+
+Покрытие кода при сборке с санитайзерами не меняется
+
+4. Особенности сбора покрытия
+
+Поскольку код imgify по умолчанию собирается clang - для включения сбора покрытия используются опции компиляции *-fprofile-instr-generate -fcoverage-mapping*
+При сборе покрытия в процессе тестирования используется переменная окружения *LLVM_PROFILE_FILE* для указания файла, в который собирается покрытие.
+Не смог, как изначально планировал, использовать *gcovr* для преобразования собранного покрытия формат Coberture, как и в любой другой в читаемый вид, поэтому пришлось использовать преобразование *profdata -> lcov -> coberture xml*
+
+5. Установка Jenkins, создание заданий на сборку
 - создал ВМ ubuntu 22.04
 - установил Jenkins
 ```bash
@@ -126,19 +193,27 @@ sudo usermod -aG docker ${USER}
 - проект https://github.com/drJabber/ispras-fuzz.git также содержит Dockerfile для сборки образа с afl++ и зависимостями собираемого проекта (imgify)
 - в процессе исполнения Jenkinfile дженкинс собирает образ с необходимыми зависимостями и выполняет внутри образа загрузку кода собираемого проекта imgify и собирает его с соответствующими опциями компилятора в зависимости от версии (релизная, отладочная инструментированная)
 - итого, чтобы добавить еще одно задание на сборку - необходимо создать в проекте ispras-fuzz по одной ветке для каждой версии нового ПО, изменить Dockerfile, чтобы добавить зависимости нового проекта, изменить Jenkinsfile, чтобы прописать там url нового проекта, добавить необходимые патчи и опции компилятора
+- добавил плагин code coverage, который умеет отображать данные покрытия в формате Coberture - теперь после прогона пайплайна в дженкинсе можно смотреть данные покрытия.
 
 PS
 --------------
-Dockerfile - для инструментированной версии:
+Dockerfile - для инструментированной версии со сбором покрытия:
 ```Dockerfile
 FROM aflplusplus/aflplusplus:stable
-
+ARG DEBIAN_FRONTEND=noninteractive
 RUN cat /etc/os-release && \
     apt update && \
-    apt install -y libpng-dev
+    apt install -y libpng-dev p7zip-full p7zip-rar llvm python3-pip && \
+    # unlink /etc/localtime && \
+    # ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+    pip3 install lcov_cobertura
+
+COPY .scripts/ /tmp
+COPY .scripts/setup_tests.sh /tmp/.scripts/setup_tests.sh
+COPY .scripts/radamsa /tmp/.scripts/radamsa
 ```
 
-Jenkinsfile - для инструментированной версии
+Jenkinsfile - для инструментированной версии со сбором покрытия и включенными датчиками
 ```Jenkinsfile
 pipeline {
   agent any
@@ -147,7 +222,7 @@ pipeline {
         agent {
             // dockerfile true
             dockerfile {
-              filename 'Dockerfile.dev01'
+              filename 'Dockerfile.cov01'
             }
         }
         steps {
@@ -159,6 +234,8 @@ pipeline {
           ])         
 
           sh """
+             rm *.gcno *.gcda || true
+
              echo "patch defines"
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./png2bin.c | \
@@ -180,20 +257,68 @@ pipeline {
                 mv -f \$temp_file_name ./imgify.c
 
 
-             make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
+             #make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
+             #             -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
+             #             -fstack-check -fstack-protector-all --coverage"
+
+             make -j8 CFLAGS="-g -Wall -fprofile-instr-generate -fcoverage-mapping  \
+                          -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
                           -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
-                          -fstack-check -fstack-protector-all --coverage"
-
-             ./png2bin -i ./screenshot.png -o ./out.bin -p 254
-
-             ./bin2png -i ./out.bin -o ./out.png -p 253
-
+                          -fstack-check -fstack-protector-all"
           """
 
-          archiveArtifacts artifacts: '**/bin2png, **/png2bin'          
+          sh """
+            mkdir -p ./.coverage
+            /tmp/.scripts/setup_tests.sh           
+          """
+
+          recordCoverage( tools: [[parser: "COBERTURA", pattern: "**/coverage*.xml"]],
+                          id: "coverage-imgify",
+                          name: "Coverage for imgify projectt",
+                          sourceCodeRetention: "EVERY_BUILD",
+                          sourceDirectories: [[path: "./"]]
+                          )
+
+          archiveArtifacts artifacts: 'test, *.c, *.h, *.gcno, *.gcda, png2bin, bin2png'          
         }
     }    
   }
 }
+```
+
+Скрипт прогона стестов и сбора покрытия
+```
+#!/bin/bash
+
+mkdir -p ./test/png
+mkdir -p ./test/bin
+
+wget https://raw.githubusercontent.com/richgel999/random_pngs/main/random_pngs.7z -O ./test/png/test.7z
+
+7z x ./test/png/test.7z -o./test/png -y
+rm ./test/png/test.7z
+
+echo "test png2bin"
+
+test_pngs=(./test/png/*.png)
+for png in ${test_pngs[@]:0:20}; 
+do 
+    LLVM_PROFILE_FILE="./.coverage/png2bin.profraw" ./png2bin -i $png -o ${png}".bin" -p 0 || true; 
+done
+
+
+echo "test bin2png"
+/tmp/.scripts/radamsa --generators random -n 30 -o ./test/bin/test-%02n.bin
+test_bins=(./test/bin/*.bin)
+for bin in ${test_bins[@]:0:30}; 
+do 
+    LLVM_PROFILE_FILE="./.coverage/bin2png.profraw" ./bin2png -i $bin -o ${bin}".png" -p $(($RANDOM % 300)) || true; # 300>256, so paths with -p errors also will be covered
+done
+
+llvm-profdata merge -sparse ./.coverage/png2bin.profraw ./.coverage/bin2png.profraw -o ./.coverage/imgify.profdata
+llvm-cov export ./png2bin -instr-profile=./.coverage/imgify.profdata -format=lcov > ./.coverage/imgify.png2bin.lcov
+llvm-cov export ./bin2png -instr-profile=./.coverage/imgify.profdata -format=lcov > ./.coverage/imgify.bin2png.lcov
+lcov_cobertura ./.coverage/imgify.png2bin.lcov -b ./ -o ./.coverage/coverage-imgify-png2bin.xml
+lcov_cobertura ./.coverage/imgify.bin2png.lcov -b ./ -o ./.coverage/coverage-imgify-bin2png.xml
 
 ```
