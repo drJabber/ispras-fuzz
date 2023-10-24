@@ -2,7 +2,7 @@ FROM aflplusplus/aflplusplus:stable
 
 RUN cat /etc/os-release && \
     apt update && \
-    apt install -y libpng-dev p7zip-full p7zip-rar 
+    apt install -y libpng-dev p7zip-full p7zip-rar gcovr
 
 COPY .scripts/ /tmp
 COPY .scripts/setup_tests.sh /tmp/.scripts/setup_tests.sh
