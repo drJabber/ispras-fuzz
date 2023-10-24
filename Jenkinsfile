@@ -52,10 +52,12 @@ pipeline {
             
             mkdir -p ./.coverage
             gcovr -x ./.coverage/coverage.xml
+            pwd
+            ls -lha
           """
 
           // discoverGitReferenceBuild
-          recordCoverage( tools: [[parser: "COBERTURA", pattern: "./.coverage/coverage.xml"]],
+          recordCoverage( tools: [[parser: "COBERTURA", pattern: "**/coverage.xml"]],
                           id: "coverage-imgify",
                           name: "Coverage for imgify projectt",
                           sourceCodeRetention: "EVERY_BUILD",
