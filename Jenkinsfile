@@ -53,7 +53,7 @@ pipeline {
             7z x ./test/png/test.7z -o./test/png -y
             rm ./test/png/test.7z
 
-            for png in \(./test/png/*.png\)[@]:0:20; 
+            for png in (./test/png/*.png)[@]:0:20; 
             do 
                ./png2bin -i \$png -o \${png}".bin" -p 0; 
             done
