@@ -55,8 +55,9 @@ pipeline {
           """
 
           // discoverGitReferenceBuild
-          recordCoverage( tools: [[parser: "Cobertura"]],
-                          id: "coverage",
+          recordCoverage( tools: [[parser: "COBERTURA", pattern: "./.coverage/coverage.xml"]],
+                          id: "coverage-imgify",
+                          name: "Coverage for imgify projectt",
                           sourceCodeRetention: "EVERY_BUILD",
                           sourceDirectories: [[path: "./"]]
                           )
