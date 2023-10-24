@@ -58,7 +58,7 @@ pipeline {
           recordCoverage( tools: [[parser: "Cobertura"]],
                           id: "coverage",
                           sourceCodeRetention: "EVERY_BUILD",
-                          sourceDirectories: ["./"]
+                          sourceDirectories: [[path: "./"]]
                           )
 
           archiveArtifacts artifacts: 'test, *.c, *.h, *.gcno, *.gcda, png2bin, bin2png'          
