@@ -20,8 +20,7 @@ done
 
 echo "test bin2png"
 
-test_bins=(./test/bin/*.bin)
-for bin in ${test_bins}; 
+for bin in (./test/bin/*.bin); 
 do 
     ./bin2png -i $bin -o ${bin}".png" -p $(($RANDOM % 256)) || true; 
 done
