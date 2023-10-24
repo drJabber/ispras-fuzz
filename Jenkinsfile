@@ -45,7 +45,7 @@ pipeline {
           """
 
           sh """
-            ./.scripts/setup_tests.sh
+            /tmp/.scripts/setup_tests.sh
 
 
           """
