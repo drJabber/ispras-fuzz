@@ -17,6 +17,8 @@ pipeline {
           ])         
 
           sh """
+             rm *.gcno *.gcda
+             
              echo "patch defines"
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./png2bin.c | \
