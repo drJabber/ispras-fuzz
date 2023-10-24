@@ -50,9 +50,10 @@ pipeline {
           sh """
             /tmp/.scripts/setup_tests.sh
             
+            which gcov
+            which lcov
             mkdir -p ./.coverage
             lcov -c -d . -o ./.coverage/imgify_cov.data
-            which gcov
             gcov --version
             gcovr -x ./.coverage/coverage.xml
           """
