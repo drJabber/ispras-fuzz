@@ -53,7 +53,7 @@ pipeline {
             mkdir -p ./.coverage
             gcovr -x ./.coverage/coverage.xml
             pwd
-            ls -lha
+            ls -lha ./.coverage
           """
 
           // discoverGitReferenceBuild
