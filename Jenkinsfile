@@ -45,18 +45,7 @@ pipeline {
           """
 
           sh """
-            mkdir -p ./test/png
-            mkdir -p ./test/bin
-
-            wget https://raw.githubusercontent.com/richgel999/random_pngs/main/random_pngs.7z -O ./test/png/test.7z
-
-            7z x ./test/png/test.7z -o./test/png -y
-            rm ./test/png/test.7z
-
-            for png in (./test/png/*.png)[@]:0:20; 
-            do 
-               ./png2bin -i \$png -o \${png}".bin" -p 0; 
-            done
+            ./.scripts/setup_tests.sh
 
 
           """
