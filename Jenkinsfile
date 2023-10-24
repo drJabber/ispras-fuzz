@@ -52,6 +52,7 @@ pipeline {
             
             which gcov
             which lcov
+            gcc --version
             mkdir -p ./.coverage
             lcov -c -d . -o ./.coverage/imgify_cov.data
             gcov --version
