@@ -48,11 +48,11 @@ pipeline {
           """
 
           sh """
+            mkdir -p ./.coverage
+
             /tmp/.scripts/setup_tests.sh
             
-            mkdir -p ./.coverage
-            gcovr -x ./.coverage/coverage.xml
-            pwd
+            gcovr -x ./.coverage/coverage.xml --gcov-executable="llvm-cov gcov"
             ls -lha ./.coverage
           """
 
