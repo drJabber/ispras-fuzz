@@ -42,7 +42,7 @@ pipeline {
              #             -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
              #             -fstack-check -fstack-protector-all --coverage"
 
-             make -j8 CFLAGS="-g --Wall --coverage"
+             make -j8 CFLAGS="-g -Wall --coverage"
           """
 
           sh """
