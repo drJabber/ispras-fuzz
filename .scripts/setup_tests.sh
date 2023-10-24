@@ -16,16 +16,17 @@ do
     LLVM_PROFILE_FILE="./.coverage/png2bin.profraw" ./png2bin -i $png -o ${png}".bin" -p 0 || true; 
 done
 
-/tmp/.scripts/radamsa --generators random -n 20 -o ./test/bin/test-%02n.bin
 
 echo "test bin2png"
-
+/tmp/.scripts/radamsa --generators random -n 30 -o ./test/bin/test-%02n.bin
 test_bins=(./test/bin/*.bin)
-for bin in ${test_bins[@]:0:20}; 
+for bin in ${test_bins[@]:0:30}; 
 do 
-    LLVM_PROFILE_FILE="./.coverage/bin2png.profraw" ./bin2png -i $bin -o ${bin}".png" -p $(($RANDOM % 256)) || true; 
+    LLVM_PROFILE_FILE="./.coverage/bin2png.profraw" ./bin2png -i $bin -o ${bin}".png" -p $(($RANDOM % 300)) || true; # 300>256, so paths with -p errors also will be covered
 done
 
 llvm-profdata merge -sparse ./.coverage/png2bin.profraw ./.coverage/bin2png.profraw -o ./.coverage/imgify.profdata
-llvm-cov export ./png2bin -instr-profile=./.coverage/imgify.profdata -format=lcov > ./.coverage/imgify.lcov
-lcov_cobertura ./.coverage/imgify.lcov -b ./ -o ./.coverage/coverage-imgify.xml
+llvm-cov export ./png2bin -instr-profile=./.coverage/imgify.profdata -format=lcov > ./.coverage/imgify.png2bin.lcov
+llvm-cov export ./bin2png -instr-profile=./.coverage/imgify.profdata -format=lcov > ./.coverage/imgify.bin2png.lcov
+lcov_cobertura ./.coverage/imgify.png2bin.lcov -b ./ -o ./.coverage/coverage-imgify-png2bin.xml
+lcov_cobertura ./.coverage/imgify.bin2png.lcov -b ./ -o ./.coverage/coverage-imgify-bin2png.xml
