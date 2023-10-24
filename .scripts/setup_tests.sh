@@ -28,4 +28,4 @@ done
 
 llvm-profdata merge -sparse ./.coverage/png2bin.profraw ./.coverage/bin2png.profraw -o ./.coverage/imgify.profdata
 llvm-cov export ./png2bin -instr-profile=./.coverage/imgify.profdata -format=lcov > ./.coverage/imgify.lcov
-lcov_cubertura ./.coverage/imgify.conf -b ./ -o ./.coverage/coverage-imgify.xml
+lcov_cobertura ./.coverage/imgify.conf -b ./ -o ./.coverage/coverage-imgify.xml
