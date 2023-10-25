@@ -40,7 +40,7 @@ pipeline {
                 mv -f \$temp_file_name ./imgify.c
 
              echo "patch to debug"
-             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==146{print "\tprintf(\\"DEBUG height %d, width %d, channels %d, rowbytes %d, data_size %d, last_row-data %u \\\\n\\", height, width, channels, rowbytes, data_size, (uint32_t)(last_row-data));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==146{print "\tprintf(\\"DEBUG height %d, width %d, channels %d, rowbytes %d, pad_byte %u, data_size %d, last_row-data %u \\\\n\\", height, width, channels, rowbytes, pad_byte, data_size, (uint32_t)(last_row-data));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==150{print "\tprintf(\\"DEBUG last_row-data+column-1 %u \\\\n\\", (uint32_t)(last_row-data+column-1));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
    
              temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
