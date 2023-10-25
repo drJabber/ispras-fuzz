@@ -39,9 +39,15 @@ pipeline {
                 awk -v replacement="" 'NR==253{\$0=replacement}{print}'  > \$temp_file_name && \
                 mv -f \$temp_file_name ./imgify.c
 
-            echo "patch to debug"
-            temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==146{print "\tprintf(\\"DEBUG height %d, width %d, rowbytes %d, data_size %d, last_row-data %u \\\\n\\", height, width, rowbytes, data_size, (uint32_t)(last_row-data));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
-            temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==150{print "\tprintf(\\"DEBUG last_row-data+column-1 %u \\\\n\\", (uint32_t)(last_row-data+column-1));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
+             echo "patch to debug"
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==146{print "\tprintf(\\"DEBUG height %d, width %d, rowbytes %d, data_size %d, last_row-data %u \\\\n\\", height, width, rowbytes, data_size, (uint32_t)(last_row-data));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==150{print "\tprintf(\\"DEBUG last_row-data+column-1 %u \\\\n\\", (uint32_t)(last_row-data+column-1));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
+   
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
+                cat ./imgify.c | \
+                awk -v replacement="\tuint8_t *data = malloc(data_size + 1);" 'NR==117{\$0=replacement}{print}'  > \$temp_file_name && \
+                mv -f \$temp_file_name ./imgify.c
+
 
              #make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
              #             -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
