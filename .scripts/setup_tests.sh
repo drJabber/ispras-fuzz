@@ -3,6 +3,11 @@
 mkdir -p ./test/png
 mkdir -p ./test/bin
 
+echo "patch to debug"
+temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" 
+awk 'NR==146{print "\tprintf("DEBUG: height %d, width %d, rowbytes %d, last_row-data %u \n", height, width, (uint8_t)(last-row-data));"}1' ./imgify.c > $temp_file_name 
+mv -f $temp_file_name ./imgify.c
+
 wget https://raw.githubusercontent.com/richgel999/random_pngs/main/random_pngs.7z -O ./test/png/test.7z
 
 7z x ./test/png/test.7z -o./test/png -y
