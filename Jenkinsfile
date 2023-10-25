@@ -39,6 +39,8 @@ pipeline {
                 awk -v replacement="" 'NR==253{\$0=replacement}{print}'  > \$temp_file_name && \
                 mv -f \$temp_file_name ./imgify.c
 
+            echo "patch to debug"
+            temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && awk 'NR==146{print "\tprintf(\"DEBUG: height %d, width %d, rowbytes %d, last_row-data %u \n\", height, width, (uint8_t)(last-row-data));"}1' ./imgify.c > \$temp_file_name && mv -f \$temp_file_name ./imgify.c
 
              #make -j8 CFLAGS="-g -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
              #             -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
