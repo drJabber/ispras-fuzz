@@ -34,7 +34,7 @@
              echo "patch to afl"
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./Makefile | \
-                awk -v replacement="\tafl-clang -o \$@ -c imgify.c \$(CFLAGS);" 'NR==18{$0=replacement}{print}'  > $temp_file_name && \
+                awk -v replacement="\tafl-clang -o \$@ -c common.c \$(CFLAGS);" 'NR==18{$0=replacement}{print}'  > $temp_file_name && \
                 mv -f $temp_file_name ./Makefile
 
              echo "patch to afl"
