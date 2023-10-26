@@ -62,12 +62,12 @@ pipeline {
             /tmp/.scripts/setup_tests.sh           
           """
 
-          recordCoverage( tools: [[parser: "COBERTURA", pattern: "**/coverage*.xml"]],
-                          id: "coverage-imgify",
-                          name: "Coverage for imgify projectt",
-                          sourceCodeRetention: "EVERY_BUILD",
-                          sourceDirectories: [[path: "./"]]
-                          )
+          // recordCoverage( tools: [[parser: "COBERTURA", pattern: "**/coverage*.xml"]],
+          //                 id: "coverage-imgify",
+          //                 name: "Coverage for imgify projectt",
+          //                 sourceCodeRetention: "EVERY_BUILD",
+          //                 sourceDirectories: [[path: "./"]]
+          //                 )
 
           archiveArtifacts artifacts: '*//test/*, *.c, *.h, *.gcno, *.gcda, png2bin, bin2png'          
         }
