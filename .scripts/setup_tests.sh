@@ -12,6 +12,8 @@ rm ./test/png/test.7z
 echo "test png2bin"
 
 test_pngs=(./test/png/*.png)
+export ASAN_OPTIONS=detect_leaks=0,abort_on_error=1,symbolize=0,debug=true,check_initialization_order=true,detect_stack_use_after_return=true,strict_string_checks=true,detect_invalid_pointer_pairs=2 
+
 for png in ${test_pngs[@]:0:20}; 
 do 
     LLVM_PROFILE_FILE="./.coverage/png2bin-%p.profraw" ./png2bin -i $png -o ${png}".bin" -p 0 || true; 
