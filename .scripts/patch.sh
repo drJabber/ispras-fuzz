@@ -1,7 +1,7 @@
 #!/bin/sh
              rm *.gcno *.gcda || true
 
-             export CFLAGS="-g -O0 -Wall -fprofile-instr-generate -fcoverage-mapping  \
+             CFLAGS="-g -O0 -Wall -fprofile-instr-generate -fcoverage-mapping  \
                           -fstack-check -fstack-protector-all"
 
              echo "patch defines"
