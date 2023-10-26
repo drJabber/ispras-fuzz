@@ -17,8 +17,9 @@ pipeline {
           ])         
 
           sh """
+             /tmp/.scripts/patch.sh
           """
-          
+
           sh """
 
              #make -j8 CFLAGS="-g -O0 -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
