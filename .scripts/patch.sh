@@ -50,5 +50,5 @@
 
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./Makefile | \
-                awk -v replacement="\tafl-clang -o \$@ bin2png.c $^ \$(CFLAGS) \$(LDFLAGS)" 'NR==27{$0=replacement}{print}'  > $temp_file_name && \
+                awk -v replacement="\tafl-clang -o \$@ png2bin.c $^ \$(CFLAGS) \$(LDFLAGS)" 'NR==27{$0=replacement}{print}'  > $temp_file_name && \
                 mv -f $temp_file_name ./Makefile
