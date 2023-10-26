@@ -5,14 +5,14 @@
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./png2bin.c | \
                 awk -v replacement="" 'NR==30{$0=replacement}{print}' | 
-                awk -v replacement='#include \"common_options.h\"' 'NR==34{$0=replacement}{print}' > $temp_file_name && \
+                awk -v replacement='#include "common_options.h"' 'NR==34{$0=replacement}{print}' > $temp_file_name && \
                 mv -f $temp_file_name ./png2bin.c
 
              echo "patch defines"
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./bin2png.c | \
                 awk -v replacement="" 'NR==30{$0=replacement}{print}' | 
-                awk -v replacement='#include \"common_options.h\"' 'NR==34{$0=replacement}{print}' > $temp_file_name && \
+                awk -v replacement='#include "common_options.h"' 'NR==34{$0=replacement}{print}' > $temp_file_name && \
                 mv -f $temp_file_name ./bin2png.c
 
              echo "fix double free in imgify.c 253"
