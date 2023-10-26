@@ -49,6 +49,22 @@ pipeline {
                 mv -f \$temp_file_name ./imgify.c
 
 
+             echo "patch to afl"
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
+                cat ./Makefile | \
+                awk -v replacement="\tafl-clang -o $@ -c imgify.c $(CFLAGS);" 'NR==18{\$0=replacement}{print}'  > \$temp_file_name && \
+                mv -f \$temp_file_name ./Makefile
+
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
+                cat ./Makefile | \
+                awk -v replacement="\tafl-clang -o $@ bin2png.c $^ $(CFLAGS) $(LDFLAGS)" 'NR==21{\$0=replacement}{print}'  > \$temp_file_name && \
+                mv -f \$temp_file_name ./Makefile
+
+             temp_file_name="\$(mktemp /tmp/foo.XXXXXXXXX)" && \
+                cat ./Makefile | \
+                awk -v replacement="\tafl-clang -o $@ bin2png.c $^ $(CFLAGS) $(LDFLAGS)" 'NR==27{\$0=replacement}{print}'  > \$temp_file_name && \
+                mv -f \$temp_file_name ./Makefile
+
              #make -j8 CFLAGS="-g -O0 -DFORTIFY_SOURCE=2 -Wall -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak \
              #             -fsanitize-address-use-after-scope -fsanitize=unreachable -fsanitize=undefined -fcf-protection=full \
              #             -fstack-check -fstack-protector-all --coverage"
