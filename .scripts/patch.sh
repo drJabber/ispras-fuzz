@@ -1,9 +1,6 @@
 #!/bin/sh
              rm *.gcno *.gcda || true
 
-             CFLAGS="-g -O0 -Wall -fprofile-instr-generate -fcoverage-mapping  \
-                          -fstack-check -fstack-protector-all"
-
              echo "patch defines"
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./png2bin.c | \
@@ -37,15 +34,15 @@
              echo "patch to afl"
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./Makefile | \
-                awk -v replacement="\tafl-clang -o $@ -c imgify.c $(CFLAGS);" 'NR==18{$0=replacement}{print}'  > $temp_file_name && \
+                awk -v replacement="\tafl-clang -o $@ -c imgify.c \$(CFLAGS);" 'NR==18{$0=replacement}{print}'  > $temp_file_name && \
                 mv -f $temp_file_name ./Makefile
 
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./Makefile | \
-                awk -v replacement='\tafl-clang -o $@ bin2png.c $^ $(CFLAGS) $(LDFLAGS)' 'NR==21{$0=replacement}{print}'  > $temp_file_name && \
+                awk -v replacement='\tafl-clang -o $@ bin2png.c $^ \$(CFLAGS) \$(LDFLAGS)' 'NR==21{$0=replacement}{print}'  > $temp_file_name && \
                 mv -f $temp_file_name ./Makefile
 
              temp_file_name="$(mktemp /tmp/foo.XXXXXXXXX)" && \
                 cat ./Makefile | \
-                awk -v replacement='\tafl-clang -o $@ bin2png.c $^ $(CFLAGS) $(LDFLAGS)' 'NR==27{$0=replacement}{print}'  > $temp_file_name && \
+                awk -v replacement='\tafl-clang -o $@ bin2png.c $^ \$(CFLAGS) \$(LDFLAGS)' 'NR==27{$0=replacement}{print}'  > $temp_file_name && \
                 mv -f $temp_file_name ./Makefile
