@@ -5,7 +5,7 @@ pipeline {
         agent {
             // dockerfile true
             dockerfile {
-              filename 'Dockerfile.cov01'
+              filename 'Dockerfile.afl01'
             }
         }
         steps {
@@ -69,7 +69,7 @@ pipeline {
                           sourceDirectories: [[path: "./"]]
                           )
 
-          archiveArtifacts artifacts: 'test, *.c, *.h, *.gcno, *.gcda, png2bin, bin2png'          
+          archiveArtifacts artifacts: '*//test/*, *.c, *.h, *.gcno, *.gcda, png2bin, bin2png'          
         }
     }    
   }
